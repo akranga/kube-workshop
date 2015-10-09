@@ -280,3 +280,6 @@ We only need endpoint 'web' or 'web8080' both actually mapping same port of the 
 
 Then you should be able to point with your browser by entering `http://localhost:8081` in addressbar
 
+![alt text](https://raw.githubusercontent.com/akranga/kube-workshop/master/docs/jenkins-1.png "Jenkins CI Server")
+
+
