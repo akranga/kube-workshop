@@ -2,6 +2,11 @@
 
 This workshop guides through Google Kubernetes, Docker and Jenkins CI
 
+Things you might need:
+### VI cheat sheet
+
+VI cheat sheet can be found here: http://vim.rtorr.com/
+
 ## Activity 0: Setup Kubernetes
 
 Setup and teardown scripts has been placed into ```cluster/kube-up.sh``` and ```cluster/kube-down.sh``` directories correspondingly
