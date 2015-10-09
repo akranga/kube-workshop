@@ -214,7 +214,7 @@ $ kubectl create -f src/main/infra/chucknorris-rc.yml
 
 replicationcontrollers/chuck
 
-$ kubectl create -f src/main/infra/chucknorris-rc.yml
+$ kubectl create -f src/main/infra/chucknorris-svc.yml
 
 services/chuck
 
