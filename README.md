@@ -8,6 +8,8 @@ Setup and teardown scripts has been placed into ```cluster/kube-up.sh``` and ```
 
 To start kubernetes just run following command:
 ```
+$ git  clone https://github.com/akranga/kube-workshop.git kube-workshop
+$ cd kube-workshop
 $ bash cluster/kube-up.sh
 $ kubectl config set-cluster http://localhost:8080
 ```
