@@ -228,7 +228,7 @@ $ curl 172.17.0.18:8080
 "It works on my machine" always holds true for Chuck Norris.
 ```
 
-# Activity 3: Setting up CI/CD
+# Activity 3: Starting Jenkins Master
 
 Instead of building the applications we will build container with application inside and then schedule it for Kubernetes.
 
@@ -282,4 +282,34 @@ Then you should be able to point with your browser by entering `http://localhost
 
 ![alt text](https://raw.githubusercontent.com/akranga/kube-workshop/master/docs/jenkins-1.png "Jenkins CI Server")
 
+# Activiy 4: Operations with Persistent volumes
 
+Hurray you are doing good so far! However we are not ready yet. Problem is that pods are short-living beasts. When they die all information sotred inside dies with them. So, we will need some persistent volumes for our Jenkins
+
+Persistent volumes has been configuration can be executed by running command:
+```
+$ kubectl create -f jenkins/jenkins-pv.yml
+persistentvolumes/jenkins-data-vol1
+persistentvolumes/jenkins-data-vol2
+ubuntu@ip-172-31-8-2:~/kube-workshop$ kubectl get pv
+NAME                LABELS                   CAPACITY      ACCESSMODES   STATUS      CLAIM     REASON
+jenkins-data-vol1   name=jenkins-workspace   21474836480   RWO           Available
+jenkins-data-vol2   name=jenkins-jobs        10737418240   RWO           Available
+```
+
+It marks local directories `/data/vol-01` and `/data/vol-02` as persistent volumes for Kubernetes pods. You can map it directly to pod, however it is more nice to map it via so called `Persistent Volume Claims (pvc)` that abstracts pods from concrete persistent volume implementations (hostDir, AWS EBS volume, nfs etc). Pod can request Persistent Volume from kubernetes by claiming it by capacity, read-write strategy etc.
+
+Persistent volumes claims can be created by running following command:
+```
+$ kubectl create -f jenkins/jenkins-pvc.yml
+
+persistentvolumeclaims/jenkins-workspace
+persistentvolumeclaims/jenkins-jobs
+
+$ kubectl get pvc
+NAME                LABELS    STATUS    VOLUME
+jenkins-jobs        map[]     Bound     jenkins-data-vol2
+jenkins-workspace   map[]     Bound     jenkins-data-vol1
+```
+
+You can see Claims has been bound to the Persistent Volumes
