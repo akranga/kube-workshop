@@ -43,7 +43,7 @@ For the first time we will do it manually:
 
 Simply run command:
 ```
-$ docker run --rm -i -t --volume=$(pwd):/app -w /app java:jdk bas
+$ docker run --rm -i -t --volume=$(pwd):/app -w /app java:jdk bash
 ```
 
 This will download Docker container with latest Open JDK (8); mount current directory and let you inside
