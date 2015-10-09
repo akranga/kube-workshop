@@ -234,12 +234,13 @@ Instead of building the applications we will build container with application in
 
 For nice CI/CD experience we will need. 
 
-| 1. |Private Docker Registy| To store containers that we are building. Private registry should be in the same network. This will reduce network latency for transferring containers |
-| 2. | Jenkins Master | This container will have Jenkins CI master with some nice plugins, including 'workflow' that allows you to write jenkins CD/CD job in Groovy DSL |
-| 3. | Jenkins java slave | Docker container that connects via swarm plugin to Jenkins master. It has JDK and other Java build tools |
-| 4. | Jenkins docker slave | Acts after java app has beeen built and unit tested. It is building Docker image out of it. WARNING: requires priviledged mode |
-| 5. | Jenkins kubernetes slave | interacts with kuberneetes instance to run container as kubernetes service |
-
+```
+- Private Docker Registy: To store containers that we are building. Private registry should be in the same network. This will reduce network latency for transferring containers
+- Jenkins Master: This container will have Jenkins CI master with some nice plugins, including 'workflow' that allows you to write jenkins CD/CD job in Groovy DSL
+- Jenkins java slave: Docker container that connects via swarm plugin to Jenkins master. It has JDK and other Java build tools 
+- Jenkins docker slave: Acts after java app has beeen built and unit tested. It is building Docker image out of it. WARNING: requires priviledged mode 
+- Jenkins kubernetes slave: interacts with kuberneetes instance to run container as kubernetes service
+```
 
 ## Creating Jenkins Master
 
@@ -276,3 +277,6 @@ Endpoints:		172.17.0.2:50000
 
 We only need endpoint 'web' or 'web8080' both actually mapping same port of the container. Now disconnect your SSH. You will need to add
 ```-L8081:172.17.0.2:8080``` (where 172.17.0.2 is the IP of the endpoint. It might be different for you!).
+
+Then you should be able to point with your browser by entering `http://localhost:8081` in addressbar
+
