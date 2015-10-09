@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: private-registry
+  labels:
+    name: private-registry
+spec:
+  clusterIP: 10.0.0.6
+  ports:
+  - name: www
+    port: 80
+  - name: api
+    port: 5000
+  selector:
+    name: private-registry 
