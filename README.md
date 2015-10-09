@@ -180,8 +180,48 @@ chuck-bbbj5            1/1       Running   0          16m
 chuck-ow5s0            1/1       Running   0          30s
 
 $ kubectl describe service chuck
+
 Name:			chuck
 ...
 Port:			<unnamed>	8080/TCP
 Endpoints:		172.17.0.14:8080,172.17.0.15:8080,172.17.0.16:8080
+
+$ kubectl delete rc chuck
+
+replicationcontrollers/chuck
+
+$ kubectl delete service chuck
+
+services/chuck
+```
+
+# Activity 2: Kubernetes manipulations via manifests
+
+Commands are good, however we can operate with kubernetes via files. This will give us possiblity to store our configuration in the SCM and make it part of our applicaiton. So it could evolve together.
+
+Take a look in the file stores ```src/main/infra/*```. You will see RC and SCV yaml manifests. One goes to replicaiton controller declaration and another goes to Service.
+
+To start you can run following command:
+```
+$ kubectl create -f src/main/infra/chucknorris-rc.yml
+
+replicationcontrollers/chuck
+
+$ kubectl create -f src/main/infra/chucknorris-rc.yml
+
+services/chuck
+
+$ kubectl describe service chuck
+Name:			chuck
+Namespace:		default
+Labels:			name=chuck
+Selector:		app=chuck,version=0.1.0
+Type:			ClusterIP
+IP:			10.0.0.97
+Port:			api	8080/TCP
+Endpoints:		172.17.0.18:8080
+
+$ curl 172.17.0.18:8080
+
+"It works on my machine" always holds true for Chuck Norris.
 ```
