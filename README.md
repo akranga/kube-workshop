@@ -61,9 +61,62 @@ Total time: 19.007 secs
 ```
 
 Now you can exit container and take a look at the compilation result
-
 ```
 root@477c94708216:/app# exit
 $ ls build/libs/
 chnorr-0.1.0.jar
+```
+
+Let's do the same compilation as oneliner
+```
+$ docker run --rm -i -t --volume=$(pwd):/app -w /app java:jdk ./gradlew clean assemble
+
+:processResources
+:classes
+:jar
+:findMainClass
+:startScripts
+:distTar
+:distZip
+:bootRepackage
+:assemble
+
+BUILD SUCCESSFUL
+
+Total time: 17.534 secs
+```
+
+How about to compile and run it? This directory has a Dockerfile. Which where we will put our compiled JAR file and create a container image our of it. Once we have an image then we can run it
+
+Run following command:
+```
+$ docker build -t akranga/chucknorris .
+
+Sending build context to Docker daemon 37.28 MB
+Step 0 : FROM java:jdk
+ ---> 7547e52aac4b
+Step 1 : ENV APP_VERSION 0.1.0
+ ---> Running in ac77614ee44a
+...
+Step 4 : ENTRYPOINT java -jar /app.jar
+ ---> Running in 0991ddf114cf
+ ---> c5c729af0559
+Removing intermediate container 0991ddf114cf
+Successfully built c5c729af0559
+
+$ docker run -d -p 8000:8080 --name=chuck akranga/chucknorris
+$ curl localhost:8000
+
+Chuck Norris can read all encrypted data, because nothing can hide from Chuck Norris.
+```
+
+Now let's tear down our application
+```
+$ docker ps
+
+CONTAINER ID        IMAGE                                       COMMAND             
+865a6151d7ed        akranga/chucknorris                         "java -jar /app.jar"
+
+$ docker stop 865a6151d7ed
+$ docker rm 865a6151d7ed
 ```
