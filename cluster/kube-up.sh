@@ -11,7 +11,6 @@ docker run  \
 docker run \
   --volume=/:/rootfs:ro \
   --volume=/sys:/sys:ro \
-  --volume=/dev:/dev \
   --volume=/var/lib/docker/:/var/lib/docker:ro \
   --volume=/var/lib/kubelet/:/var/lib/kubelet:rw \
   --volume=/var/run:/var/run:rw \
