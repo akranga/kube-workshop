@@ -11,6 +11,17 @@ VI cheat sheet can be found here: http://vim.rtorr.com/
 
 Setup and teardown scripts has been placed into ```cluster/kube-up.sh``` and ```cluster/kube-down.sh``` directories correspondingly
 
+### Connecting to Server
+
+This what can help you!
+
+```
+chmod 600 ~/.ssh/javaday.pem
+ssh -i ~/.ssh/javaday.pem ubuntu@123.123.123.123 -L8080:localhost:80
+```
+
+### Connected?
+
 To start kubernetes just run following command:
 ```
 $ git  clone https://github.com/akranga/kube-workshop.git kube-workshop
