@@ -289,7 +289,12 @@ Port:			swarm	50000/TCP
 Endpoints:		172.17.0.2:50000
 ```
 
-Now we can hit our browser with URL ```http://localhost:8080/api/v1/proxy/namespaces/default/services/jenkins:web/```. You can see that besides server name ```jenkins``` we put ```web``` which corresponds to the port name. Handy when we expose several ports
+We only need endpoint 'web' or 'web8080' both actually mapping same port of the container. Now disconnect your SSH. You will need to add
+```-L8081:172.17.0.2:8080``` (where 172.17.0.2 is the IP of the endpoint. It might be different for you!).
+
+Then you should be able to point with your browser by entering `http://localhost:8081` in addressbar
+
+NOTE: You cannot navigate Jeniins UI proxied with Kubernetes service proxy. Jenkins doesn't like it. As a solution for this you need to use an external load balancer. However for this workshop we will just call Jenkins service endpoint directly via port mapping.
 
 ![alt text](https://raw.githubusercontent.com/akranga/kube-workshop/master/docs/jenkins-1.png "Jenkins CI Server")
 
@@ -383,3 +388,17 @@ node("master") {
 }
 
 ```
+
+And... run the build!
+
+# Activity 5: Operations with Jenkins
+
+We setup our Jenkins Master and configured persistent volumes, As you noticed we are able to do git pull but we do not able to  compile it. This is because Jenkins Master doesn't have JDK tool installed. We can install it (that's an option); however this will make our Jenkins Master more majical that violates microservice nature of Docker.
+
+Instead of running compilation on Jenkins Master we will prepare set of Dockerized Slaves. 
+
+* Java Builder: has tool JDK. Can run, compile and do test-suits.
+* Docker Builder: will create build docker container
+* Kubernetes Builder: will manipulate with kubernetes API. Schedule PODs and Services
+
+
