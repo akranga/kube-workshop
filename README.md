@@ -231,6 +231,16 @@ Endpoints:		172.17.0.2:8080
 $ curl 172.17.0.2
 "It works on my machine" always holds true for Chuck Norris.
 ```
+### Accessing services via service proxy 
+
+Remember, kubernetes has service proxy. We can access our services there as well
+
+Presuming kubernetes has been avaible at ```http://localhost:8080``` (if you are keeping SSH connection with port mapping to localhost, otherwise chage ```localhost``` to public ip of kubernetes master).
+
+Open your web browser and enter following enter following URL: ```http://localhost:8080/api/v1/proxy/namespaces/default/services/chuck/```
+
+Then you should get something like the following: 
+![alt text](https://raw.githubusercontent.com/akranga/kube-workshop/master/docs/chuck-browser.png "Chuck in your browser")
 
 # Activity 3: Starting Jenkins Master
 
