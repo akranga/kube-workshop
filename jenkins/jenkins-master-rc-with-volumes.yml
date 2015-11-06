@@ -29,9 +29,6 @@ spec:
         - name: jenkins-jobs
           mountPath: /var/jenkins_home/jobs
           readOnly: false
-        env:
-        - name: JENKINS_OPTS
-          value: --prefix /api/v1/proxy/namespaces/default/services/jenkins:web
       volumes:
       - name: jenkins-jobs
         persistentVolumeClaim:
