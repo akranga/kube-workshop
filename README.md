@@ -17,7 +17,7 @@ This what can help you!
 
 ```
 chmod 600 ~/.ssh/javaday.pem
-ssh -i ~/.ssh/javaday.pem ubuntu@123.123.123.123 -L8080:localhost:80
+ssh -i ~/.ssh/javaday.pem ubuntu@123.123.123.123 -L8080:localhost:8080 -4
 ```
 
 ### Connected?
