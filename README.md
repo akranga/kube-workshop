@@ -225,11 +225,10 @@ Labels:			name=chuck
 Selector:		app=chuck,version=0.1.0
 Type:			ClusterIP
 IP:			10.0.0.97
-Port:			api	8080/TCP
-Endpoints:		172.17.0.18:8080
+Port:			<unnamed>	80/TCP
+Endpoints:		172.17.0.2:8080
 
-$ curl 172.17.0.18:8080
-
+$ curl 172.17.0.2
 "It works on my machine" always holds true for Chuck Norris.
 ```
 
