@@ -395,7 +395,7 @@ Add following script:
 
 node("master") {
   git 'https://github.com/akranga/chucknorris'
-  echo 'Done!!!"
+  echo 'Done!!!'
 }
 
 ```
