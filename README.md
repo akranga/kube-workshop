@@ -344,7 +344,7 @@ jenkins-mlmtm          1/1       Running   0          40s
 ```
 
 Second POD file has one difference: it uses PVC
-```
+```yaml
 spec:
     ...
     volumeMounts:
