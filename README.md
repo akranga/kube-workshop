@@ -401,4 +401,14 @@ Instead of running compilation on Jenkins Master we will prepare set of Dockeriz
 * Docker Builder: will create build docker container
 * Kubernetes Builder: will manipulate with kubernetes API. Schedule PODs and Services
 
+Let's run it:
 
+```
+$ kubectl create -f jenkins/java-slave-rc.yml
+$ kubectl create -f jenkins/docker-slave-rc.yml
+$ kubectl create -f jenkins/kubernetes-slave-rc.yml
+```
+
+### How does it works?
+
+We have a challenge
