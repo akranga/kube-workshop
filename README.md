@@ -364,3 +364,25 @@ spec:
 ```
 
 We have two volumes one to store Jenkins jobs and another to store workspaces. This is what we don't want to loose. Other Jenkins configuration (plugins, tools etc) needs to be baked inside of container.
+
+### Add a simple Jenkins Workflow
+
+Now let's create a simple job! Click to create Jobs link (as follows on the screenshot).
+![alt text](https://raw.githubusercontent.com/akranga/kube-workshop/master/docs/jenkins-2.png "Jenkins CI")
+
+
+Give a name to the new job: let's say: ```hello-chuck```. And select a type ```Workflow```
+![alt text](https://raw.githubusercontent.com/akranga/kube-workshop/master/docs/jenkins-3.png "Jenkins CI")
+
+Add following script:
+```groovy
+
+node("master") {
+  git 'https://github.com/akranga/chucknorris'
+  echo 'Done!!!"
+}
+
+```
+
+See example:
+![alt text](https://raw.githubusercontent.com/akranga/kube-workshop/master/docs/jenkins-4.png "Jenkins CI")
