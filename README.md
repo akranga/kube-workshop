@@ -233,7 +233,7 @@ $ curl 172.17.0.2
 ```
 ### Accessing services via service proxy 
 
-Remember, kubernetes has service proxy. We can access our services there as well
+Remember? Kubernetes has service proxy. We can access our services there as well
 
 Presuming kubernetes has been avaible at ```http://localhost:8080``` (if you are keeping SSH connection with port mapping to localhost, otherwise chage ```localhost``` to public ip of kubernetes master).
 
@@ -289,16 +289,15 @@ Port:			swarm	50000/TCP
 Endpoints:		172.17.0.2:50000
 ```
 
-We only need endpoint 'web' or 'web8080' both actually mapping same port of the container. Now disconnect your SSH. You will need to add
-```-L8081:172.17.0.2:8080``` (where 172.17.0.2 is the IP of the endpoint. It might be different for you!).
-
-Then you should be able to point with your browser by entering `http://localhost:8081` in addressbar
+Now we can hit our browser with URL ```http://localhost:8080/api/v1/proxy/namespaces/default/services/jenkins:web/```. You can see that besides server name ```jenkins``` we put ```web``` which corresponds to the port name. Handy when we expose several ports
 
 ![alt text](https://raw.githubusercontent.com/akranga/kube-workshop/master/docs/jenkins-1.png "Jenkins CI Server")
 
+So far so good! However we are not ready yet. Problem is that pods are short-living beasts. What if kubernetes will decide to restart our Jenkins pod?. Remember? Container dies with it's data. Sounds like we need some persistent volumes
+
 # Activiy 4: Operations with Persistent volumes
 
-Hurray you are doing good so far! However we are not ready yet. Problem is that pods are short-living beasts. When they die all information sotred inside dies with them. So, we will need some persistent volumes for our Jenkins
+Here is the contract. Persistent volumes have been configured by Operator, while POD and RC are typically responsibility of the DEV. We need to put between persistent volume (PV) and POD an abstraction layer called in Kubernetes as Persistent Volume Claim. It will give possiblity to the PODs claim storage without knowing specifics storage provisioning details
 
 Persistent volumes has been configuration can be executed by running command:
 ```
@@ -327,3 +326,41 @@ jenkins-workspace   map[]     Bound     jenkins-data-vol1
 ```
 
 You can see Claims has been bound to the Persistent Volumes
+
+### Back to Jenkins
+
+Now our goal is to run Jenkins POD with respect to storage. You need to stop RC and POD of "stateless" Jenkins and run with volumes.
+
+```
+$ kubectl stop -f jenkins/jenkins-master-rc.yml
+replicationcontrollers/jenkins
+
+$ kubectl create -f jenkins/jenkins-master-rc-with-volumes.yml
+replicationcontrollers/jenkins
+
+$ kubectl get pods
+NAME                   READY     STATUS    RESTARTS   AGE
+jenkins-mlmtm          1/1       Running   0          40s
+```
+
+Second POD file has one difference: it uses PVC
+```
+spec:
+    ...
+    volumeMounts:
+    - name: jenkins-workspace
+      mountPath: /var/jenkins_home/workspace
+      readOnly: false
+    - name: jenkins-jobs
+      mountPath: /var/jenkins_home/jobs
+      readOnly: false
+  volumes:
+  - name: jenkins-jobs
+    persistentVolumeClaim:
+      claimName: jenkins-jobs
+  - name: jenkins-workspace
+    persistentVolumeClaim:
+      claimName: jenkins-workspace
+```
+
+We have two volumes one to store Jenkins jobs and another to store workspaces. This is what we don't want to loose. Other Jenkins configuration (plugins, tools etc) needs to be baked inside of container.
