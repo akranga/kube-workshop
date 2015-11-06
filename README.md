@@ -383,6 +383,3 @@ node("master") {
 }
 
 ```
-
-See example:
-![alt text](https://raw.githubusercontent.com/akranga/kube-workshop/master/docs/jenkins-4.png "Jenkins CI")
