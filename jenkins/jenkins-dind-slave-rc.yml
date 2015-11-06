@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: jenkins-docker-builder
+  labels:
+    name: jenkins-docker-builder
+spec:
+  replicas: 2
+  selector:
+    name: jenkins-docker-builder
+  template:
+    metadata:
+      labels:
+        name: jenkins-docker-builder
+    spec:
+      containers:
+      - name: docker-buider
+        image: akranga/jenkins-dind-builder
+        imagePullPolicy: Always
+        securityContext: 
+          privileged: true
+        env:
+        - name: TRUSTED_REGISTRIES
+          value: docker-registry.r53.acp.io
+        args: ["-name", "docker-slave", "-labels", "docker dind"]
+        ports:
+        - name: build-executor
+          containerPort: 50000
+        volumeMounts:
+        - name: jenkins-workspace
+          mountPath: /var/jenkins_home/workspace
+      volumes:
+       - name: jenkins-workspace
+         persistentVolumeClaim:
+           claimName: jenkins-workspace

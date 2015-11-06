@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: jenkins-kubernetes-builder
+  labels:
+    name: jenkins-kubernetes-builder
+spec:
+  replicas: 1
+  selector:
+    name: jenkins-kubernetes-builder
+  template:
+    metadata:
+      labels:
+        name: jenkins-kubernetes-builder
+    spec:
+      containers:
+      - name: jenkins-slave
+        image: akranga/jenkins-kubernetes-builder
+        args: ["-name", "kubernetes-builder", "-labels", "kube kubectl kubernetes"]
+        env:
+        - name: KUBERNETES_SECRETS
+          value: /etc/secrets/kube
+        ports:
+        - name: build-executor
+          containerPort: 50000
+        volumeMounts:
+        - name: jenkins-workspace
+          mountPath: /var/jenkins_home/workspace
+          readOnly: false
+        - name: kubernetes-secrets
+          mountPath: /etc/secrets/kube
+          readOnly: true
+      volumes:
+      - name: kubernetes-secrets
+        secret:
+          secretName: kubernetes-secrets
+      - name: jenkins-workspace
+        persistentVolumeClaim:
+          claimName: jenkins-workspace
