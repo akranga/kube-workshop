@@ -253,6 +253,18 @@ Open your web browser and enter following enter following URL: ```http://localho
 Then you should get something like the following: 
 ![alt text](https://raw.githubusercontent.com/akranga/kube-workshop/master/docs/chuck-browser.png "Chuck in your browser")
 
+##  Add some visual with Fabric8
+
+Let's depliy Fabric8. Run following command:
+
+```
+$ kubectl create -f fabric8/fabrik8-kubernetes.json
+
+```
+
+After few minutes just hit your service proxy with following URL:
+http://localhost:8080/api/v1/proxy/namespaces/default/services/fabric8/kubernetes/overview
+
 # Activity 3: Starting Jenkins Master
 
 Instead of building the applications we will build container with application inside and then schedule it for Kubernetes.
