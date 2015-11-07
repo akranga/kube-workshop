@@ -17,7 +17,7 @@ docker run \
   --net=host \
   --privileged=true \
   -d \
-  gcr.io/google_containers/hyperkube:v1.0.6  \
+  akranga/hyperkube:1.0.6 \
     /hyperkube kubelet \
     --containerized \
     --hostname-override="127.0.0.1" \
