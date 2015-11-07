@@ -21,7 +21,7 @@ spec:
           privileged: true
         env:
         - name: TRUSTED_REGISTRIES
-          value: docker-registry.r53.acp.io
+          value: my-private-registry.com
         args: ["-name", "docker-slave", "-labels", "docker dind"]
         ports:
         - name: build-executor
