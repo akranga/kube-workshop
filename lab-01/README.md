@@ -137,3 +137,43 @@ CONTAINER ID        IMAGE                                       COMMAND
 $ docker stop 865a6151d7ed
 $ docker rm 865a6151d7ed
 ```
+
+# Removing Build Tools
+
+We just built image `akranga/chucknorris` which is little bit bulky. We do not need JDK to run Spring boot. Instead JRE will be just enough.
+
+Now let's update Docker file with `vi` editor.
+
+Open file with 
+
+```
+$ vi Dockerfile
+```
+
+Now press `i` to enter interactive mode. and replace `FROM java:jdk` with `FROM java:jre`
+
+press 
+```
+:wq
+# to safe and exit file. To validate succressful change 
+
+$ cat Dockerfile
+FROM java:jre
+
+ENV APP_VERSION 0.1.0
+
+COPY build/libs/chnorr-$APP_VERSION.jar /app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "/app.jar"]
+```
+
+Let's build image again. Feel the diference
+```
+$ docker build -t akranga/chucknorris .
+$ docker images
+
+```
+
+Our image is now almos 300MB slimmer. Let's schedule it with Kubernetes. Go to `lab-02`
