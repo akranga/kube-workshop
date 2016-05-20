@@ -1,4 +1,4 @@
-FROM java:jre
+FROM java:jdk
 
 ENV APP_VERSION 0.1.0
 

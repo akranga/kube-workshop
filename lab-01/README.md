@@ -1,17 +1,25 @@
 # Lab 01 Proxy Containers
 
 
-Next step is to clone our micro service
+We have one micro-service based on Spring Boot and gradle
 ```
-$ git clone https://github.com/akranga/chucknorris.git
-cd chucknorris
+$ cd chucknorris
+$ pwd
+
+/home/core/kube-workshop/lab-01/chucknorris
 ```
 
 ## Activity 1: Compiling with Docker
 
-ChuckNorris is a Spring boot micro service with one controller. As the first step we will need to compile it
+ChuckNorris is a very simple Spring boot micro service with one controller. As the first step we will need to compile it.
 
-However our environmetn is not ready. We simply (I don't) do not have Java Development Kit of right version. We will use Java docker container to compile our app and produce distribution JAR file
+But...
+```
+$ java -version
+-bash: java: command not found
+```
+
+This is okay. There is no Java in the VM. We don't need Java to compile and build Java application :). We will use Java docker container to compile our app and produce distribution JAR file
 
 For the first time we will do it manually:
 
