@@ -129,32 +129,50 @@ replicationcontrollers/chuck
 
 $ kubectl create -f src/main/infra/chucknorris-svc.yml
 
-services/chuck
-
-$ kubectl describe service chuck
-Name:			chuck
-Namespace:		default
-Labels:			name=chuck
-Selector:		app=chuck,version=0.1.0
-Type:			ClusterIP
-IP:			10.0.0.97
-Port:			<unnamed>	80/TCP
-Endpoints:		172.17.0.2:8080
-
-$ curl 10.0.0.97
-"It works on my machine" always holds true for Chuck Norris.
-```
 ### Externalize the Service 
 
 Thgere is a number of ways how to chuck norris extgernally
 
 You can call  `curl http://localhost:8080/api/v1/proxy/namespaces/default/services/chuck/`
 
-Let's add a load balancer
+Let's add a load balancer. Let's remove our chuck service for a while
 
 ```
+$ kuberctl delete -f chucknorris-svc.yml
+
+```
+
+add `type: LoadBalancer` record to the file
+```
+vim chucknorris-svc.yml
+# your serivce will look like this
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: chuck
+  labels:
+    name: chuck
+spec:
+  # clusterIP: 10.0.0.10
+  type: LoadBalancer
+  ports:
+  - port: 80
+    protocol: "TCP"
+    targetPort: 8080
+  selector:
+    app: chuck
+    version: 0.1.0
 
 ```
 
 Then you should get something like the following: 
 ![alt text](https://raw.githubusercontent.com/akranga/kube-workshop/master/docs/chuck-browser.png "Chuck in your browser")
+
+## cleaning up
+
+```
+$ kubectl delete -f chucknorris-svc.yml
+$ kubectl delete -f chucknorris-rc.yml
+```
