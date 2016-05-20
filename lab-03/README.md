@@ -12,6 +12,8 @@ For nice CI/CD experience we will need.
 - Jenkins kubernetes slave: interacts with kuberneetes instance to run container as kubernetes service
 ```
 
+But we will start with something simple
+
 ## Creating Jenkins Master
 
 Jenkins Master replication controller and service availale here:
@@ -43,4 +45,29 @@ Port:			web8080	8080/TCP
 Endpoints:		172.17.0.2:8080
 Port:			swarm	50000/TCP
 Endpoints:		172.17.0.2:50000
+LoadBalancer Ingress:	a223eb6231e6511e6a96402c5df29254-493784349.eu-central-1.elb.amazonaws.com
 ```
+
+Let's wait untill load balancer will be propogated 
+
+```
+curl a223eb6231e6511e6a96402c5df29254-493784349.eu-central-1.elb.amazonaws.com
+```
+
+Then we should be able access Jenkins with the browser.
+
+## in the Jenkins
+
+1. Go to the Jobs => Workflow
+
+2. Give it a nice name.
+
+3. Unselect checkbox button "Groovy sandbox"
+
+4. Write simple groovy script:
+```
+node {
+  echo "hello word"
+}
+```
+5. Build the job!
