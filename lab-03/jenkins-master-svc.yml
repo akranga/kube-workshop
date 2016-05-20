@@ -5,6 +5,7 @@ metadata:
   labels:
     name: jenkins
 spec:
+  type: LoadBalancer
   ports:
   - name: web
     port: 80
