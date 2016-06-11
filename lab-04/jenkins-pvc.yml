@@ -1,0 +1,25 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: jenkins-workspace
+selector:
+    name: jenkins-workspace
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+----
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: jenkins-jobs
+selector:
+    name: jenkins-jobs
+spec:
+  accessModes:
+  - ReadWriteOnce  
+  resources:
+    requests:
+      storage: 10Gi
