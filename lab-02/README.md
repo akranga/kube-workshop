@@ -197,6 +197,8 @@ chuck2-1791737841-lf1gw         1/1       Running   0          8s
 Let's probe the container
 ```
 $ kubectl describe pod chuck2-1791737841-lf1gw
+OR
+$ kubectl describe pod $(kubectl get pods | awk '/^chuck/ { print $1; }')
 Name:       chuck2-1791737841-lf1gw
 Namespace:  default
 Node:       ip-10-0-0-56.ec2.internal/10.0.0.56
