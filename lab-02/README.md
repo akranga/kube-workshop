@@ -38,7 +38,7 @@ Now you should be able to enter the dashboard
 1. We shall first start with the pod. Click "Pods" on the main menu left
 2. Now select (+) symol on the top right (see screenshot)
 
-![Dashboard](docs/dashboard1.png)
+![Dashboard](../docs/dashboard1.png)
 
 3. Fill following params:
     - Specify app details below [`checked`]
@@ -52,7 +52,7 @@ Now you should be able to enter the dashboard
 
 After a while you should be able to see somehting like on the screen below:
 
-![Dashboard](docs/dashboard2.png)
+![Dashboard](../docs/dashboard2.png)
 
 What just happened. Kubernetes deployed few things:
 1. *POD* with our application container
@@ -61,17 +61,17 @@ What just happened. Kubernetes deployed few things:
  
 Which is higher level ablstraction several kubernetes resources tightly related to each other (like above, POD is pretty much useless without ReplicaSet). Deployment is handy when you will want to roll back all resources in a single shot
 
-![Dashboard](docs/dashboard3.png)
+![Dashboard](../docs/dashboard3.png)
 
 You can also check the logs for the container. 
 
-![Dashboard](docs/dashboard4.png)
+![Dashboard](../docs/dashboard4.png)
 
 Kubernetes collects all logs from the pods and metrics.
 
 You can also export POD definition as YAML file:
 
-![Dashboard](docs/dashboard5.png)
+![Dashboard](../docs/dashboard5.png)
 
 
 You will also notice that Kubernetes tagged your pod with some labels. Labels are important, it allow different kubernetes resources to lookup each other. For example POD and ReplicaSet has been linked by labels. You can have multiple PODs of the same container. They needs to differently labeled to allow ReplicaSets to work with them correspondingly
@@ -98,7 +98,7 @@ b56f8dd98ec7
 
 If we will come back to the Kubernetes UI we will see that Kubernetes detected a container failure and restarted it. 
 
-![Dashboard](docs/dashboard6.png)
+![Dashboard](../docs/dashboard6.png)
 
 Now let's do something similar to from the CLI
 
