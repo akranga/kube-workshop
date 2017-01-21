@@ -39,19 +39,20 @@ $ docker ps -a # to see all containers
 
 Now let's run our docker image
 ```
-$ docker run hello-world
+$ docker run --rm hello-world
 ```
 
 If you now run `docker ps` you will see nothing but if you run `docker ps -a` you will see an image that went to the state `Exited (0)`. Which means wihtout error
 
 You can delete old container by capturing it's id (looks like hash). and putting as argument to command `docker rm ID or NAME` of the container.
 
-When you run container you can giver it a name: `docker run --name=hello hello-world`. Now you can refer container (even exite by name).
+When you run container you can give it a name: `docker run --name=hello hello-world`. Now you can refer container (even exite by name).
 
 You can also run container in interactive mode. Let's do that.
 ```
 docker pull ubuntu
-docker run  --rm -i -t  --dns="8.8.8.8" ubuntu
+docker run  --rm -i -t ubuntu
 root@1871d8c98944:/$ apt-get update
 root@1871d8c98944:/$ apt-get install apache2
+root@1871d8c98944:/$ exit
 ```

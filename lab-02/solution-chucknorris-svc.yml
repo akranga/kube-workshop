@@ -5,7 +5,7 @@ metadata:
   labels:
     name: chuck
 spec:
-  # clusterIP: 10.0.0.10
+  clusterIP: 10.3.0.222
   ports:
   - port: 80
     protocol: "TCP"

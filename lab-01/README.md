@@ -84,7 +84,7 @@ Let's create a file. To do this we will need a "vi" editor. Don't get trapped, r
 
 Enter following command:
 ```
-$ vi ./gradle.sh
+$ vim ./gradle.sh
 ```
 Then press `i` to insert symbols
 ```
@@ -97,8 +97,9 @@ Press `ESC` and `wq` to save and quit the vi. Let's validate that the file is ac
 Now let's add some execution rights and run it 
 ```
 chmod +x gradle.sh
+sudo mv gradle.sh /opt/bin/gradle
 
-./gralde.sh clean assemble 
+gradle clean assemble 
 ```
 
 
@@ -153,11 +154,13 @@ $ vi Dockerfile
 
 Now press `i` to enter interactive mode. and replace `FROM java:jdk` with `FROM java:jre`
 
-press 
+To save and exit vim press:
 ```
 :wq
-# to safe and exit file. To validate succressful change 
+```
 
+Validate succressful change 
+```
 $ cat Dockerfile
 FROM java:jre
 

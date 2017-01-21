@@ -13,8 +13,8 @@ VI cheat sheet can be found here: http://vim.rtorr.com/
 This what can help you!
 
 ```
-chmod 600 ~/.ssh/lviv.pem
-ssh -i ~/.ssh/lviv.pem core@123.123.123.123 
+chmod 600 ~/.ssh/gdg.pem
+ssh -i ~/.ssh/gdg.pem core@123.123.123.123 
 ```
 
 ### Connected?
@@ -22,9 +22,8 @@ ssh -i ~/.ssh/lviv.pem core@123.123.123.123
 To start kubernetes just run following command:
 
 ```
-install-kubernetes
-git clone https://github.com/akranga/kube-workshop.git
-cd kube-workshop/lab-00
+$ git clone https://github.com/akranga/kube-workshop.git
+$ cd kube-workshop/lab-00
 ```
 
-Feel free to start!
+Feel free to start! with *lab-00*
