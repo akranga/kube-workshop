@@ -1,73 +1,356 @@
-# Activity 3: Starting Jenkins Master
+# Activity 3: Working with Volumes
 
-Instead of building the applications we will build container with application inside and then schedule it for Kubernetes.
+This time we will deploy a Wordpress app... I know it is a little bit boring, however every devops engineer must deploy at WordPress at least once. What is more important. WordPress have got few containers linked together (WordPress and MySQL database). To be able successfully deploy the app we should be able to address configuration management and persistent volumes
 
-For nice CI/CD experience we will need. 
+Before we will start the excersize, please go to the `lab-03` directory
 
-```
-- Private Docker Registy: To store containers that we are building. Private registry should be in the same network. This will reduce network latency for transferring containers
-- Jenkins Master: This container will have Jenkins CI master with some nice plugins, including 'workflow' that allows you to write jenkins CD/CD job in Groovy DSL
-- Jenkins java slave: Docker container that connects via swarm plugin to Jenkins master. It has JDK and other Java build tools 
-- Jenkins docker slave: Acts after java app has beeen built and unit tested. It is building Docker image out of it. WARNING: requires priviledged mode 
-- Jenkins kubernetes slave: interacts with kuberneetes instance to run container as kubernetes service
-```
+### Deploying a database
 
-But we will start with something simple
+First we need to create a deployment of MySQL. What is important, `myssql` container has an environment variable `MYSQL_ROOT_PASSWORD` that we must set with the desired password.
 
-## Creating Jenkins Master
-
-Jenkins Master replication controller and service availale here:
+So, create a file following command
 
 ```
-$ kubectl create -f jenkins-master-rc.yml
-
-replicationcontrollers/jenkins
-
-$ kubectl create -f jenkins-master-svc.yml
-
-services/jenkins
+$ vim mysql-depl.yaml
 ```
 
-It will take few minutes for Jenkins to warm up... Be patient! You can check status by executing ```$ kubectl get pods```
+And then press `i` to go to the insert mode and add following content. After you finish press `esc` and `:wq` to save and exit editor
+``` yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-mysql
+  labels:
+    app: wordpress
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: wordpress
+    tier: mysql
+  clusterIP: None
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wordpress-mysql
+  labels:
+    app: wordpress
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: mysecretpass
+        ports:
+        - containerPort: 3306
+          name: mysql
+```
 
-Once it is running you should be able to connect by mapping ports from remote host to local via SSH (if you running remote host in the cloud)
-
-To do so, you need to capture IP and ports by executing following command:
+This time we will use Deployment. It is pretty stable, however it uses BETA api. 
 
 ```
-$ kubectl describe service jenkins
+$ kubectl create -f mysql-dpl.yaml
+deployment "wordpress-mysql" created
 
-Name:			jenkins
-...
-Port:			web	80/TCP
-Endpoints:		172.17.0.2:8080
-Port:			web8080	8080/TCP
-Endpoints:		172.17.0.2:8080
-Port:			swarm	50000/TCP
-Endpoints:		172.17.0.2:50000
-LoadBalancer Ingress:	a223eb6231e6511e6a96402c5df29254-493784349.eu-central-1.elb.amazonaws.com
+$ kubectl get pods
+NAME                               READY     STATUS    RESTARTS   AGE
+wordpress-mysql-2586502893-qds92   1/1       Running   0          43s
 ```
 
-Let's wait untill load balancer will be propogated 
+Let's try the database
+```
+$ kubectl exec -i -t wordpress-mysql-2586502893-qds92 bash
+
+root@wordpress-mysql-2586502893-qds92:/# mysql -u root
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+root@wordpress-mysql-2586502893-qds92:/# mysql -u root -p${MYSQL_ROOT_PASSWORD}
+
+mysql> create database gdg;
+
+mysql> show databases;
+
++--------------------+
+| Database           |
++--------------------+
+| ... |
+| gdg                |
+| ... |
++--------------------+
+4 rows in set (0.00 sec)
+mysql> exit
+Bye
+root@wordpress-mysql-2586502893-qds92:/# exit
+$
+```
+
+Problem with this container, it has ephemeral storage that will not survive container crash.
 
 ```
-curl a223eb6231e6511e6a96402c5df29254-493784349.eu-central-1.elb.amazonaws.com
+$ docker ps | grep mysql
+de0bac76808d        mysql:5.6 ...
+
+$ docker kill de0bac76808d
+de0bac76808d
+
+$ kubectl get pods
+NAME                               READY     STATUS    RESTARTS   AGE
+wordpress-mysql-2586502893-qds92   1/1       Running   1          10m
 ```
 
-Then we should be able access Jenkins with the browser.
-
-## in the Jenkins
-
-1. Go to the Jobs => Workflow
-
-2. Give it a nice name.
-
-3. Unselect checkbox button "Groovy sandbox"
-
-4. Write simple groovy script:
+Let's validate the database
 ```
-node {
-  echo "hello word"
-}
+$ kubectl exec -i -t wordpress-mysql-2586502893-qds92 bash
+root@wordpress-mysql-2586502893-qds92:/# mysql -u root -p${MYSQL_ROOT_PASSWORD}
+mysql> show databases;
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+3 rows in set (0.00 sec)
+
+mysql> exit
+Bye
+root@wordpress-mysql-2586502893-qds92:/# exit
+exit
+$ 
 ```
-5. Build the job!
+
+To be able to surve this we need to add persistent volumes. Kubernetes supports over 18 different volume types. We will use most simplistic called `emptyDir`
+
+Create a file:
+```
+$ vim wordpress-pv.yaml
+```
+
+And add following content
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv-1
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /tmp/data/pv-1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-pv-2
+  labels:
+    type: local
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /tmp/data/pv-2
+```
+
+This will create two persistent volumes in `/temp/data` directory with size 10GB each. 
+
+You can link persistent volumes directly to the container. However it is not a good practice. In fact container should just claim, that it wants certain persistencde and kubernetes shoudl be able to deliver desired storage.
+
+So we create a persistence claim file
+```
+$ vim mysql-pvc.yaml
+```
+
+And add following code:
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+```
+
+and run the command
+```
+$ kubectl create -f mysql-pvc.yaml
+```
+
+Check what we have got here:
+```
+$ kubectl get pv
+NAME         CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS      CLAIM                    REASON    AGE
+local-pv-1   10Gi       RWO           Retain          Available                                      4m
+local-pv-2   10Gi       RWO           Retain          Bound       default/mysql-pv-claim             4m
+
+$ kubectl get pvc
+NAME             STATUS    VOLUME       CAPACITY   ACCESSMODES   AGE
+mysql-pv-claim   Bound     local-pv-2   10Gi       RWO           26s
+```
+
+You see? Persistent volume remains operational generic, while persistence volume claim is now application specific.
+
+Now we are ready to link volumes to the mysql deployment. Let's modify our deployment file
+```
+$ vim mysql-depl.yaml
+```
+
+Add followng code
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-mysql
+  labels:
+    app: wordpress
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: wordpress
+    tier: mysql
+  clusterIP: None
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wordpress-mysql
+  labels:
+    app: wordpress
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: mysecretpass
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+```
+
+And run command to update the deployment
+```
+$ kubectl apply -f mysql-dpl.yaml
+service "wordpress-mysql" configured
+deployment "wordpress-mysql" configured
+```
+
+# Deploy Wordpress
+
+Well this should be rather easy
+```
+$vim wordpress-dpl.yaml
+```
+
+apply following content
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: wordpress
+    tier: frontend
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wp-pv-claim
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: frontend
+    spec:
+      containers:
+      - image: wordpress:4.6.1-apache
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: wordpress-mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: mysecretpass
+        ports:
+        - containerPort: 80
+          name: wordpress
+        volumeMounts:
+        - name: wordpress-persistent-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: wordpress-persistent-storage
+        persistentVolumeClaim:
+          claimName: wp-pv-claim
+```
+
+And let's create all these resources
+
+```
+$ kubectl create -f wordpress-dpl.yaml
+
+service "wordpress" created
+persistentvolumeclaim "wp-pv-claim" created
+deployment "wordpress" created
+
+
+```
