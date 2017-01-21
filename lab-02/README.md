@@ -29,8 +29,8 @@ You will get a security warning. This is okay and you can ignore it. We are usin
 
 When you will be prompted for username and password please enter the following:
 ```
-User: admin
-Password: secret
+User:     gdg
+Password: riga17
 ```
 
 Now you should be able to enter the dashboard
