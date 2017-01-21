@@ -18,7 +18,7 @@ NAME        LABELS                             STATUS
 127.0.0.1   kubernetes.io/hostname=127.0.0.1   Ready
 ```
 
-## It is time to open Kubernets Dashboard
+## It is time to open Kubernetes Dashboard
 
 Dashboard is the Kubernetes web console that helps you navigate through the different pods. Open your browser and go to the:
 https://YOUR-IP-ADDRESS/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard
@@ -40,7 +40,7 @@ Now you should be able to enter the dashboard
 
 ![Dashboard](../docs/dashboard1.png)
 
-3. Fill following params:
+3. Fill in the following params:
     - Specify app details below [`checked`]
     - App Name: `chuck-norris-pod`
     - Container image: `akranga/chucknorris`
@@ -59,7 +59,7 @@ What just happened. Kubernetes deployed few things:
 2. *ReplicaSet* with 1 replica of the pod
 3. And created a *Deployment*. 
  
-Which is higher level ablstraction several kubernetes resources tightly related to each other (like above, POD is pretty much useless without ReplicaSet). Deployment is handy when you will want to roll back all resources in a single shot
+Deployment is an higher level abstraction - several kubernetes resources tightly related to each other (like above, POD is pretty much useless without ReplicaSet). Deployment is handy when you will want to roll back all resources in a single shot
 
 ![Dashboard](../docs/dashboard3.png)
 
@@ -74,7 +74,7 @@ You can also export POD definition as YAML file:
 ![Dashboard](../docs/dashboard5.png)
 
 
-You will also notice that Kubernetes tagged your pod with some labels. Labels are important, it allow different kubernetes resources to lookup each other. For example POD and ReplicaSet has been linked by labels. You can have multiple PODs of the same container. They needs to differently labeled to allow ReplicaSets to work with them correspondingly
+You will also notice that Kubernetes tagged your pod with some labels. Labels are important, they allow different kubernetes resources to lookup each other. For example POD and ReplicaSet has been linked by labels. You can have multiple PODs of the same container. They need to labeled differently to allow ReplicaSets to work with them correspondingly
 
 ## ReplicaSet 
 
@@ -159,7 +159,7 @@ KUBERNETES_SERVICE_HOST=10.3.0.1
 ...
 ```
 
-Containers can discover other pods by Environment Variables. This is not the only option, however simplies one. You see that can discover Kubernetes itself. Check out this funny command from INSIDE of the container:
+Containers can discover other pods by using Environment Variables. This is not the only option, however it is the simplest one. You see that Kubernetes can discover itself. Check out this funny command from INSIDE of the container:
 ```
 root@chuck-norris-4098746947-qx8xx:/curl -k https://admin:secret@10.3.0.1:443/version
 
@@ -366,7 +366,7 @@ replicationcontroller "chuck" created
 
 ### Externalize the Service 
 
-Thgere is a number of ways how to chuck norris extgernally
+There are a number of ways how to chuck norris externally
 
 You can call  `curl http://localhost:8080/api/v1/proxy/namespaces/default/services/chuck/`
 
