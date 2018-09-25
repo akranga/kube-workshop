@@ -4,7 +4,7 @@ metadata:
   name: web-ingress
 spec:
   rules:
-  - host: wordsmith.app.devopsdays.kubernetes.delivery
+  - host: wordsmith.app.<fqdn-of-your-claster>
     http:
       paths:
       - path: /
