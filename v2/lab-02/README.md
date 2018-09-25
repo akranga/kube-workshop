@@ -154,7 +154,7 @@ spec:
 
 9. Observe the result in a browser:
 
-![Application](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/app.png "Logo Title Text 1")
+![Application](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-02/app-latvian.png "Logo Title Text 1")
 
 
 
