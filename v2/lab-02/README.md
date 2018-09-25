@@ -109,6 +109,7 @@ This file replaces initial words.sql script, that inserted English words.
 ```docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/db .```
 ```docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/db```
 5. Since we want to keep all our images secure, let's build & push 2 remaining services of the application (web and words) to our private docker registry (cd to the corresponding directories):
+
 ```docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/web .```
 ```docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/words .```
 ```docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/web ```
