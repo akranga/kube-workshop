@@ -39,7 +39,6 @@ All pods are exposed on an internal IP in the cluster. This type makes the pods 
 ╰─ kubectl get services
 NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
 db           ClusterIP   10.3.206.118   <none>        5432/TCP   56m
-kubernetes   ClusterIP   10.3.0.1       <none>        443/TCP    20h
 web          ClusterIP   10.3.96.162    <none>        80/TCP     56m
 words        ClusterIP   10.3.19.162    <none>        8080/TCP   56m
 ```
@@ -56,9 +55,14 @@ words     5         5         5            5           1h
 > A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment) describes desired state of a Service (how many pod replicas to spin up, etc.)
 
 ## Exposing the service
+The application we deployed in the previous step has been available exclusively for cluster itself (and all pods deployed). We need to expose some of the services to the users.
 
-There are multiple ways how to make your service available pupblicly. 
+There are multiple ways how to make applications available publicly:
 * External load balancer, from Cloud provider (AWS, Microsoft Azure, etc.) or custom made
-* Ingress 
+* Ingress via user facing reverse proxy server such as nginx or Traefik.
+* NodePort - Exposes the Service on the same port of each selected node in the cluster using NAT. Makes a Service accessible from outside the cluster using <NodeIP>:<NodePort>.
+  
+Let's try to expose our application through Ingress.
+
 
 
