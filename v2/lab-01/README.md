@@ -9,3 +9,10 @@ We have demo application called Wordsmith, that produces sentences from from ran
 * web - a Go web application which calls the API and builds words into sentences
 
 [Kubernetes deployment manifest of the application](kube-deployment.yaml)
+
+## Activity 1: Simple application deployment
+
+1. Create copy of [manifest](kube-deployment.yaml) file in your Web Terminal. (Use VIM, or download the file from Github using Curl)
+2. 
+
+
