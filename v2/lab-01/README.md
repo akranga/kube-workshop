@@ -10,23 +10,44 @@ We have demo application called Wordsmith, that produces sentences from from ran
 
 [Kubernetes deployment manifest of the application](kube-deployment.yaml)
 
-## Activity 1: Simple application deployment
+## Simple application deployment
 
 1. Create a copy of [manifest](kube-deployment.yaml) file in your Web Terminal. (Use VIM, or download the file from Github using Curl [link](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/kube-deployment.yaml))
 2. Run
 ```
 kubectl apply -f kube-deployment.yaml
 ```
-3. Run 
+3. Run ```kubectl get pods``` and observe the result
 ```
-╰─ kubectl get pods
-NAME                     READY     STATUS    RESTARTS   AGE
-db-79b64dd4bb-g5wqd      1/1       Running   0          1m
-web-58d8d84784-zdxkb     1/1       Running   0          1m
-words-6f8c8d68b9-gckqk   1/1       Running   0          1m
-words-6f8c8d68b9-kf2x7   1/1       Running   0          1m
-words-6f8c8d68b9-l2l92   1/1       Running   0          1m
-words-6f8c8d68b9-ns6xp   1/1       Running   0          1m
-words-6f8c8d68b9-thpm5   1/1       Running   0          1m
+╰─ kubectl get pods -o wide
+NAME                     READY     STATUS    RESTARTS   AGE       IP          NODE
+db-79b64dd4bb-fv4j4      1/1       Running   0          39m       10.2.1.31   ip-10-0-36-25.eu-west-1.compute.internal
+web-58d8d84784-6kl4b     1/1       Running   0          39m       10.2.2.22   ip-10-0-34-172.eu-west-1.compute.internal
+words-6f8c8d68b9-2xmdq   1/1       Running   0          39m       10.2.2.21   ip-10-0-34-172.eu-west-1.compute.internal
+words-6f8c8d68b9-d5tpj   1/1       Running   0          39m       10.2.0.20   ip-10-0-44-3.eu-west-1.compute.internal
+words-6f8c8d68b9-j2k6q   1/1       Running   0          39m       10.2.1.33   ip-10-0-36-25.eu-west-1.compute.internal
+words-6f8c8d68b9-mhrr9   1/1       Running   0          39m       10.2.1.32   ip-10-0-36-25.eu-west-1.compute.internal
+words-6f8c8d68b9-n6lk8   1/1       Running   0          39m       10.2.0.21   ip-10-0-44-3.eu-west-1.compute.internal
 ```
+5 replicas of words microservice, 1 replica of web microservice and 1 replica of db service should be running.
+All pods are exposed on an internal IP in the cluster. This type makes the pods only reachable from within the cluster.
+
+> A pod is a group of one or more containers (such as Docker containers), with shared storage/network, and a specification for how to run the containers.
+
+4. Run ```kubectl get services``` and observe the result
+```
+╰─ kubectl get services
+NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+db           ClusterIP   10.3.206.118   <none>        5432/TCP   56m
+kubernetes   ClusterIP   10.3.0.1       <none>        443/TCP    20h
+web          ClusterIP   10.3.96.162    <none>        80/TCP     56m
+words        ClusterIP   10.3.19.162    <none>        8080/TCP   56m
+```
+
+## Exposing the service
+
+There are multiple ways how to make your service available pupblicly. 
+* External load balancer, from Cloud provider (AWS, Microsoft Azure, etc.) or custom made
+* Ingress 
+
 
