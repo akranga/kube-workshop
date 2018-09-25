@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-We have demo application called Wordsmith, that produces sentences from from random words. The application consists of 3 microservices:
+We have demo application called Wordsmith, that produces sentences from random words. The application consists of 3 microservices:
 
 * db - a Postgres database which stores words
 * words - a Java REST API which serves words read from the databases
@@ -12,7 +12,7 @@ We have demo application called Wordsmith, that produces sentences from from ran
 
 ## Simple application deployment
 
-1. Create a copy of [manifest](kube-deployment.yaml) file in your Web Terminal. (Use VIM, or download the file from Github using Curl [link](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/kube-deployment.yaml))
+1. Create a copy of [manifest](kube-deployment.yml) file in your Terminal. (Use VIM, or download the file from Github using Curl [link](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/kube-deployment.yaml))
 2. Run
 ```
 kubectl apply -f kube-deployment.yaml
@@ -64,6 +64,19 @@ There are multiple ways how to make applications available publicly:
   
 Let's try to expose our application through Ingress via Traefik.
 
-1. 
+1. Create a copy of [manifest](kube-ingress.yml) file in your Terminal. (Use VIM, or download the file from Github using Curl [link](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/kube-ingress.yml).
+2. Update ```spec.rules.-host``` field in kube-ingress.yml file with fqdn of your cluster (example: wordsmith.app.devopsdays.kubernetes.delivery)
+3. Run
+```
+kubectl apply -f kube-ingress.yml
+```
+4. Verify that your ingress has been successfully created:
+```
+╰─ kubectl get ingresses
+NAME          HOSTS                                          ADDRESS   PORTS     AGE
+web-ingress   wordsmith.app.<fqdn-of-your-cluster>                     80        20m
+```
+4. Open wordsmith.app.<fqdn-of-your-cluster> in a browser.
+5. Observe home page of the application:
 
 
