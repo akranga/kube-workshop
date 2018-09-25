@@ -12,7 +12,7 @@ We have demo application called Wordsmith, that produces sentences from random w
 
 ## Simple application deployment
 
-1. Create a copy of [manifest](kube-deployment.yml) file in your Terminal. (Use VIM, or download the file from Github using Curl [link](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/kube-deployment.yaml))
+1. Download [manifest](kube-deployment.yml), Curl friendly link [link](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/kube-deployment.yaml)
 2. Run
 ```
 kubectl apply -f kube-deployment.yaml
@@ -64,7 +64,7 @@ There are multiple ways how to make applications available publicly:
   
 Let's try to expose our application through Ingress via Traefik.
 
-1. Create a copy of [manifest](kube-ingress.yml) file in your Terminal. (Use VIM, or download the file from Github using Curl [link](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/kube-ingress.yml).
+1. Download [manifest](kube-ingress.yml), Curl friendly [link](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/kube-ingress.yml)
 2. Update ```spec.rules.-host``` field in kube-ingress.yml file with fqdn of your cluster. Example: 
 ```
 apiVersion: extensions/v1beta1
