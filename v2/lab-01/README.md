@@ -12,7 +12,7 @@ We have demo application called Wordsmith, that produces sentences from from ran
 
 ## Activity 1: Simple application deployment
 
-1. Create copy of [manifest](kube-deployment.yaml) file in your Web Terminal. (Use VIM, or download the file from Github using Curl)
+1. Create copy of [manifest](kube-deployment.yaml) file in your Web Terminal. (Use VIM, or download the file from Github using Curl [link](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/kube-deployment.yaml)
 2. 
 
 
