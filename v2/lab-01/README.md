@@ -79,6 +79,6 @@ web-ingress   wordsmith.app.<fqdn-of-your-cluster>                     80       
 4. Open wordsmith.app.<fqdn-of-your-cluster> in a browser.
 5. Observe home page of the application:
   
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+![Application](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/app.png "Logo Title Text 1")
 
 
