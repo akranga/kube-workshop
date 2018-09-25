@@ -32,7 +32,7 @@ words-6f8c8d68b9-n6lk8   1/1       Running   0          39m       10.2.0.21   ip
 5 replicas of words microservice, 1 replica of web microservice and 1 replica of db service should be running.
 All pods are exposed on an internal IP in the cluster. This type makes the pods only reachable from within the cluster.
 
-> A pod is a group of one or more containers (such as Docker containers), with shared storage/network, and a specification for how to run the containers.
+> A [pod](https://kubernetes.io/docs/concepts/workloads/pods/pod) is a group of one or more containers (such as Docker containers), with shared storage/network, and a specification for how to run the containers.
 
 4. Run ```kubectl get services``` and observe the result
 ```
@@ -43,6 +43,7 @@ kubernetes   ClusterIP   10.3.0.1       <none>        443/TCP    20h
 web          ClusterIP   10.3.96.162    <none>        80/TCP     56m
 words        ClusterIP   10.3.19.162    <none>        8080/TCP   56m
 ```
+> A [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/) is an abstraction which defines a logical set of Pods and a policy by which to access them - sometimes called a micro-service. A service proxies and load balances requests across all replicas of a pod.
 
 ## Exposing the service
 
