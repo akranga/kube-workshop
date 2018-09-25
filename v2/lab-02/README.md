@@ -101,4 +101,6 @@ INSERT INTO adjectives(word) VALUES
   ('ciets'),
   ('vecs');
 ```
+This file replaces initial words.sql script, that inserted English words.
+4. Let's build a new Docker image for the database and push it to the private Docker registry.
 
