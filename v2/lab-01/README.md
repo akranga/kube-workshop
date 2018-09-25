@@ -17,5 +17,16 @@ We have demo application called Wordsmith, that produces sentences from from ran
 ```
 kubectl apply -f kube-deployment.yaml
 ```
-
+3. Run 
+```
+╰─ kubectl get pods
+NAME                     READY     STATUS    RESTARTS   AGE
+db-79b64dd4bb-g5wqd      1/1       Running   0          1m
+web-58d8d84784-zdxkb     1/1       Running   0          1m
+words-6f8c8d68b9-gckqk   1/1       Running   0          1m
+words-6f8c8d68b9-kf2x7   1/1       Running   0          1m
+words-6f8c8d68b9-l2l92   1/1       Running   0          1m
+words-6f8c8d68b9-ns6xp   1/1       Running   0          1m
+words-6f8c8d68b9-thpm5   1/1       Running   0          1m
+```
 
