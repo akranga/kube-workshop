@@ -17,7 +17,7 @@ Each workshop participant (ideally) has his own Harbor Docker registry running i
 1. Run ```docker login harbor.svc.<cluster-name>.superkube.kubernetes.delivery```. Enter username and password (admin:Harbor12345). The output should be: ```Login Succeeded```
 
 2. Log in to Harbor UI (exaple https://harbor.svc.viktor.superkube.kubernetes.delivery) and create a project (repository) with name ```workshop```. We will push images there a little bit later:
-
+![Harbor](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-02/harbor.png "Logo Title Text 1")
 
 2. Create a secret that contains credentials of your docker registry:
 ```kubectl create secret docker-registry harbor-<cluster-name> --docker-server=harbor.svc.<cluster-name>.superkube.kubernetes.delivery --docker-username=admin --docker-password=Harbor12345 --docker-email=viktorsoginskis@gmail.com``` The output should be ```secret "harbor-viktor" created```.
