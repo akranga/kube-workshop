@@ -77,6 +77,6 @@ NAME          HOSTS                                          ADDRESS   PORTS    
 web-ingress   wordsmith.app.<fqdn-of-your-cluster>                     80        20m
 ```
 4. Open wordsmith.app.<fqdn-of-your-cluster> in a browser.
-5. Observe home page of the application:
+5. Observe a home page of the application:
   
 ![Application](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/app.png "Logo Title Text 1")
