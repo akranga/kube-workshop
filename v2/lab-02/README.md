@@ -12,7 +12,7 @@ We are going to push images to a private docker registry (Harbor) and authorize 
 
 ## Private Docker registry
 
-Each workshop participant (ideally) have his own Harbor Docker registry running in his Kubernetes cluster (backed by AWS S3 storage). It must be available at ```https://harbor.svc.<your-cluster-name>.workshop.base.stacks.delivery```. Let's try to log into the registry and configure our Kubernetes to pull images from the registry.
+Each workshop participant (ideally) has his own Harbor Docker registry running in his Kubernetes cluster (backed by AWS S3 storage). It must be available at ```https://harbor.svc.<your-cluster-name>.workshop.base.stacks.delivery```. Let's try to log into the registry and configure our Kubernetes to pull images from the registry.
 
 1. Run ```docker login harbor.svc.<your-cluster-name>.workshop.base.image.acks.delivery``` The output should be:
 2. Create a secret that contains credentials of your docker registry:
