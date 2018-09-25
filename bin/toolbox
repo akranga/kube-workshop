@@ -1,0 +1,63 @@
+#!/bin/sh -e
+
+if test -z "$USER"; then
+    echo USER is not set
+    exit 1
+fi
+
+if test -z "$HOME"; then
+    echo HOME is not set
+    exit 1
+fi
+
+BASEDIR="$(pwd)"
+if test "$BASEDIR" = "/"; then
+    echo "Toolbox doesn't support current directory /"
+    exit 1
+fi
+
+TOOLBOX_SHELL=${TOOLBOX_SHELL:-/bin/bash}
+IMAGE=${IMAGE:-agilestacks/toolbox}
+IMAGE_VERSION=${IMAGE_VERSION:-stable}
+
+if  test -z "${AWS_PROFILE}" && \
+    test -x "$(which aws)" && \
+    aws sts get-caller-identity > /dev/null 2>&1; then
+    AWS_PROFILE=$(aws configure list | awk  '$1 ~ /^profile$/ {print $2}')
+    export AWS_PROFILE
+fi
+
+envfile=$(mktemp)
+env |grep -E '^(AWS_|TERM|LANG)' >"$envfile"
+envadd=""
+if test -s "$envfile"; then
+    # agilestacks/aws workarounds
+    if ! grep -E ^AWS_CONFIG_FILE "$envfile"; then
+        echo AWS_CONFIG_FILE= >> "$envfile"
+    fi
+    if ! grep -E ^AWS_DEFAULT_PROFILE "$envfile" && test -n "$"AWS_PROFILE; then
+        echo AWS_DEFAULT_PROFILE="$AWS_PROFILE" >> "$envfile"
+    fi
+    envadd="--env-file $envfile"
+fi
+
+docker pull "$IMAGE:$IMAGE_VERSION" 2> /dev/null || true
+docker run -ti --rm \
+    --net=host \
+    -h toolbox-"$(tty|sed -e 's|/dev/||')" \
+    -e "USER=$USER" \
+    -e "UID=$(id -u)" \
+    -e "GID=$(id -g)" \
+    -e "HOME=$HOME" \
+    -e "SHELL=${TOOLBOX_SHELL}" \
+    -e 'PS1=\u@\e[92m\h\e[0m \w $ ' \
+    -v "$HOME:$HOME" \
+    -v "$BASEDIR:$BASEDIR" \
+    --privileged=true \
+    --cap-add=NET_ADMIN \
+    -w "$BASEDIR" \
+    $envadd \
+    "$IMAGE:$IMAGE_VERSION" "$@"
+echo "Shutting down toolbox... bye!"
+
+rm -f "$envfile"
