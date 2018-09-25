@@ -1,4 +1,4 @@
-# Lab 02 Cuztomized Appplication Deployment
+# Lab 02 Cuztomized Appplication Deployment && Private Registries
 
 ## Introduction
 
@@ -42,6 +42,7 @@ Each workshop participant (ideally) has his own Harbor Docker registry running i
 ```
 4. cd to k8s-wordsmith-demo directory and modify ```kube-deployment.yml``` file. Add ```imagePullSecrets``` to the ```specs``` section of each ```Deployment``` in order to use the secret we created in Step 2. Example:
 ```
+...
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
@@ -62,6 +63,7 @@ spec:
           name: db
       imagePullSecrets:
       - name: harbor-viktor
+...      
 ```
 Now Kubernetes is ready to pull images from private Docker registry!
 
@@ -102,5 +104,49 @@ INSERT INTO adjectives(word) VALUES
   ('vecs');
 ```
 This file replaces initial words.sql script, that inserted English words.
-4. Let's build a new Docker image for the database and push it to the private Docker registry.
+
+4. Let's build a new Docker image for the database and push it to the private Docker registry. From ```k8s-wordsmith-demo/db``` directory run:
+```docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/db .```
+```docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/db```
+5. Since we want to keep all our images secure, let's build & push 2 remaining services of the application (web and words) to our private docker registry (cd to the corresponding directories):
+```docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/web .```
+```docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/words .```
+```docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/web ```
+```docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/words```
+6. cd to k8s-wordsmith-demo directory and modify ```kube-deployment.yml``` file. Make sure that all the ```Deployments``` point to the images we built in the Step 4,5. Example:
+```
+...
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: db
+  labels:
+    app: words-db
+spec:
+  template:
+    metadata:
+      labels:
+        app: words-db
+    spec:
+      containers:
+      - name: db
+        image: harbor.svc.viktor.superkube.kubernetes.delivery/workshop/db
+        ports:
+        - containerPort: 5432
+          name: db
+      imagePullSecrets:
+      - name: harbor-viktor
+...      
+```
+
+7. Run
+```kubectl apply -f kube-deployment.yaml```
+
+8. Expose the ```web``` application:
+```kubectl apply -f kube-ingress.yml```
+
+9. Observe the result in the browser:
+
+
+
 
