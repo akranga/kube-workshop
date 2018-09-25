@@ -8,4 +8,4 @@ We have demo application called Wordsmith, that produces sentences from from ran
 * words - a Java REST API which serves words read from the databases
 * web - a Go web application which calls the API and builds words into sentences
 
-Kubernetes deployment manifest of the application
+[Kubernetes deployment manifest of the application](kube-deployment.yaml)
