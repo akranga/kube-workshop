@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: update-demo
+  namespace: default
+  labels:
+    app: update-demo
+spec:
+  rollbackTo:
+    revision: 0
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 33%
+      maxSurge: 33%
+  minReadySeconds: 1
+  selector:
+    matchLabels:
+      app: update-demo
+  template:
+    metadata:
+      name: update-demo
+      labels:
+        app: update-demo
+        version: "kitten"
+    spec:
+      containers:
+      - name: application
+        image: gcr.io/google_containers/update-demo:kitten
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            port: http
+          initialDelaySeconds: 1
+        readinessProbe:
+          httpGet:
+            port: http
+          initialDelaySeconds: 1
