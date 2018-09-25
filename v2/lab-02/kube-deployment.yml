@@ -11,7 +11,6 @@ spec:
       name: db
   selector:
     app: words-db
-  clusterIP: None
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -27,10 +26,12 @@ spec:
     spec:
       containers:
       - name: db
-        image: dockersamples/k8s-wordsmith-db
+        image: harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/db
         ports:
         - containerPort: 5432
           name: db
+      imagePullSecrets:
+      - name: harbor-viktor 
 ---
 apiVersion: v1
 kind: Service
@@ -45,7 +46,6 @@ spec:
       name: api
   selector:
     app: words-api
-  clusterIP: None
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -54,7 +54,7 @@ metadata:
   labels:
     app: words-api
 spec:
-  replicas: 5
+  replicas: 3
   template:
     metadata:
       labels:
@@ -62,10 +62,12 @@ spec:
     spec:
       containers:
       - name: words
-        image: dockersamples/k8s-wordsmith-api
+        image: harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/words
         ports:
         - containerPort: 8080
           name: api
+      imagePullSecrets:
+      - name: harbor-viktor
 ---
 apiVersion: v1
 kind: Service
@@ -75,12 +77,11 @@ metadata:
     app: words-web
 spec:
   ports:
-    - port: 8081
+    - port: 80
       targetPort: 80
       name: web
   selector:
     app: words-web
-  type: LoadBalancer
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -96,7 +97,9 @@ spec:
     spec:
       containers:
       - name: web
-        image: dockersamples/k8s-wordsmith-web
+        image: harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/web
         ports:
         - containerPort: 80
           name: words-web
+      imagePullSecrets:
+      - name: harbor-viktor
