@@ -32,7 +32,7 @@ words-6f8c8d68b9-n6lk8   1/1       Running   0          39m       10.2.0.21   ip
 5 replicas of words microservice, 1 replica of web microservice and 1 replica of db service should be running.
 All pods are exposed on an internal IP in the cluster. This type makes the pods only reachable from within the cluster.
 
-> A [pod](https://kubernetes.io/docs/concepts/workloads/pods/pod) is a group of one or more containers (such as Docker containers), with shared storage/network, and a specification for how to run the containers.
+> A [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod) is a group of one or more containers (such as Docker containers), with shared storage/network, and a specification for how to run the containers.
 
 4. Run ```kubectl get services``` and observe the result
 ```
@@ -43,7 +43,17 @@ kubernetes   ClusterIP   10.3.0.1       <none>        443/TCP    20h
 web          ClusterIP   10.3.96.162    <none>        80/TCP     56m
 words        ClusterIP   10.3.19.162    <none>        8080/TCP   56m
 ```
-> A [Kubernetes Service](https://kubernetes.io/docs/concepts/services-networking/service/) is an abstraction which defines a logical set of Pods and a policy by which to access them - sometimes called a micro-service. A service proxies and load balances requests across all replicas of a pod.
+> A [Service](https://kubernetes.io/docs/concepts/services-networking/service) is an abstraction which defines a logical set of Pods and a policy by which to access them - sometimes called a micro-service. A service proxies and load balances requests across all replicas of a pod. Similar to pods, all services are exposed on an internal Cluster IP, unless it's headless service that does not need to be accessed.
+
+5. Run ```kubectl get deployments``` and observe the result
+```
+╰─ kubectl get deployments
+NAME      DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+db        1         1         1            1           1h
+web       1         1         1            1           1h
+words     5         5         5            5           1h
+```
+> A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment) describes desired state of a Service (how many pod replicas to spin up, etc.)
 
 ## Exposing the service
 
