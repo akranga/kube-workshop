@@ -120,7 +120,7 @@ docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/web
 docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/words
 ```
 
-6. cd to k8s-wordsmith-demo directory and modify ```kube-deployment.yml``` file. Make sure that all the ```Deployments``` point to the images we built in the Step 4,5. Example:
+6. cd to k8s-wordsmith-demo directory and modify ```kube-deployment.yml``` file. Make sure that all the ```Deployments``` point to the images we built in the Steps 4,5. Example:
 ```
 ...
 apiVersion: apps/v1beta1
