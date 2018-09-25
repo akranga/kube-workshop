@@ -152,8 +152,9 @@ spec:
 8. Expose the ```web``` application:
 ```kubectl apply -f kube-ingress.yml```
 
-9. Observe the result in the browser:
+9. Observe the result in a browser:
 
+![Application](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/app.png "Logo Title Text 1")
 
 
 
