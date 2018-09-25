@@ -12,11 +12,12 @@ We are going to push images to a private docker registry (Harbor) and authorize 
 
 ## Private Docker registry
 
-Each workshop participant (ideally) has his own Harbor Docker registry running in his Kubernetes cluster (backed by AWS S3 storage). It must be available at ```https://harbor.svc.<your-cluster-name>.workshop.base.stacks.delivery```. Let's try to log into the registry and configure our Kubernetes to pull images from the registry.
+Each workshop participant (ideally) has his own Harbor Docker registry running in his Kubernetes cluster (backed by AWS S3 storage). It must be available at ```https://harbor.svc.<cluster-name>.superkube.kubernetes.delivery```. Let's try to log into the registry and configure our Kubernetes to pull images from the registry.
 
-1. Run ```docker login harbor.svc.<your-cluster-name>.workshop.base.image.acks.delivery``` The output should be:
+1. Run ```docker login harbor.svc.<cluster-name>.superkube.kubernetes.delivery```. Enter username and password (admin:Harbor12345). The output should be: ```Login Succeeded```
+
 2. Create a secret that contains credentials of your docker registry:
-```kubectl create secret docker-registry harbor-<cluster-name> --docker-server=harbor.svc.<cluster-name>.workshop.base.stacks.delivery --docker-username=admin --docker-password=<your-password> --docker-email=<your-email>```
+```kubectl create secret docker-registry harbor-<cluster-name> --docker-server=harbor.svc.<cluster-name>.superkube.kubernetes.delivery --docker-username=admin --docker-password=Harbor12345 --docker-email=viktorsoginskis@gmail.com``` The output should be ```secret "harbor-viktor" created```.
 
 > Objects of type [secret](https://kubernetes.io/docs/concepts/configuration/secret/) are intended to hold sensitive information, such as passwords, OAuth tokens, and ssh keys. Putting this information in a secret is safer and more flexible than putting it verbatim in a pod definition or in a docker image.
 
