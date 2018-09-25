@@ -14,11 +14,36 @@ We are going to push images to a private docker registry (Harbor) and authorize 
 
 Each workshop participant (ideally) have his own Harbor Docker registry running in his Kubernetes cluster (backed by AWS S3 storage). It must be available at ```https://harbor.svc.<your-cluster-name>.workshop.base.stacks.delivery```. Let's try to log into the registry and configure our Kubernetes to pull images from the registry.
 
-1. Run ```docker login harbor.svc.<your-cluster-name>.workshop.base.stObjects of type secret are intended to hold sensitive information, such as passwords, OAuth tokens, and ssh keys. Putting this information in a secret is safer and more flexible than putting it verbatim in a pod definition or in a docker image.acks.delivery```. The output should be:
+1. Run ```docker login harbor.svc.<your-cluster-name>.workshop.base.image.acks.delivery``` The output should be:
 2. Create a secret that contains credentials of your docker registry:
 ```kubectl create secret docker-registry harbor-<cluster-name> --docker-server=harbor.svc.<cluster-name>.workshop.base.stacks.delivery --docker-username=admin --docker-password=<your-password> --docker-email=<your-email>```
 
 > Objects of type [secret](https://kubernetes.io/docs/concepts/configuration/secret/) are intended to hold sensitive information, such as passwords, OAuth tokens, and ssh keys. Putting this information in a secret is safer and more flexible than putting it verbatim in a pod definition or in a docker image.
+
+3. Check that secret has been created using ```kubectl get secret harbor-<cluster-name> --output=json```. The output should be:
+4. cd to k8s-wordsmith-demo directory and modify ```kube-deployment.yml``` file. Add ```imagePullSecrets``` to the ```specs``` section of each ```Deployment``` in order to use the secret we created in Step 2. Example:
+```
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: db
+  labels:
+    app: words-db
+spec:
+  template:
+    metadata:
+      labels:
+        app: words-db
+    spec:
+      containers:
+      - name: db
+        image: harbor.svc.viktor.workshop.base.stacks.delivery/workshop/db
+        ports:
+        - containerPort: 5432
+          name: db
+      imagePullSecrets:
+      - name: harbor-viktor
+```
 
 ## Modify the DB application
 
