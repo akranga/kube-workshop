@@ -21,7 +21,25 @@ Each workshop participant (ideally) has his own Harbor Docker registry running i
 
 > Objects of type [secret](https://kubernetes.io/docs/concepts/configuration/secret/) are intended to hold sensitive information, such as passwords, OAuth tokens, and ssh keys. Putting this information in a secret is safer and more flexible than putting it verbatim in a pod definition or in a docker image.
 
-3. Check that secret has been created using ```kubectl get secret harbor-<cluster-name> --output=json```. The output should be:
+3. Check that secret has been created using ```kubectl get secret harbor-<cluster-name> --output=json```. The output should be similar to:
+```
+{
+    "apiVersion": "v1",
+    "data": {
+        ".dockerconfigjson": "eyJhdXRocyI6eyJoYXJib3Iuc3ZjLnZpa3Rvci5zdXBlcmt1YmUua3ViZXJuZXRlcy5kZWxpdmVyeSI6eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJIYXJib3IxMjM0NSIsImVtYWlsIjoidmlrdG9yc29naW5za2lzQGdtYWlsLmNvbSIsImF1dGgiOiJZV1J0YVc0NlNHRnlZbTl5TVRJek5EVT0ifX19"
+    },
+    "kind": "Secret",
+    "metadata": {
+        "creationTimestamp": "2018-09-25T18:15:08Z",
+        "name": "harbor-viktor",
+        "namespace": "default",
+        "resourceVersion": "273070",
+        "selfLink": "/api/v1/namespaces/default/secrets/harbor-viktor",
+        "uid": "ef98a741-c0ee-11e8-b7db-06d0009de686"
+    },
+    "type": "kubernetes.io/dockerconfigjson"
+}
+```
 4. cd to k8s-wordsmith-demo directory and modify ```kube-deployment.yml``` file. Add ```imagePullSecrets``` to the ```specs``` section of each ```Deployment``` in order to use the secret we created in Step 2. Example:
 ```
 apiVersion: apps/v1beta1
