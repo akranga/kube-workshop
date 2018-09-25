@@ -1,4 +1,4 @@
-# Lab 02 Customized Appplication Deployment & Private Registries
+# Lab 02 Customize Appplication Deployment
 
 ## Introduction
 
