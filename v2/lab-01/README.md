@@ -78,6 +78,6 @@ web-ingress   wordsmith.app.<fqdn-of-your-cluster>                     80       
 ```
 4. Open wordsmith.app.<fqdn-of-your-cluster> in a browser.
 5. Observe home page of the application:
-[Application]: app.png
+[Application]: (app.png)
 
 
