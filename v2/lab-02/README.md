@@ -106,15 +106,19 @@ INSERT INTO adjectives(word) VALUES
 This file replaces initial words.sql script, that inserted English words.
 
 4. Let's build a new Docker image for the database and push it to the private Docker registry. From ```k8s-wordsmith-demo/db``` directory run:
-```docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/db .```
-```docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/db```
+```
+docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/db .
+docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/db
+```
 
 5. Since we want to keep all our images secure, let's build & push 2 remaining services of the application (web and words) to our private docker registry (cd to the corresponding directories):
 
-```docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/web .```
-```docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/words .```
-```docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/web ```
-```docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/words```
+```
+docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/web .
+docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/words .
+docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/web 
+docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/words
+```
 
 6. cd to k8s-wordsmith-demo directory and modify ```kube-deployment.yml``` file. Make sure that all the ```Deployments``` point to the images we built in the Step 4,5. Example:
 ```
