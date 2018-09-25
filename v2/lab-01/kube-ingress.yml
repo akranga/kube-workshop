@@ -4,7 +4,7 @@ metadata:
   name: web-ingress
 spec:
   rules:
-  - host: wordsmith.app.<fqdn-of-your-claster>
+  - host: wordsmith.app.<fqdn-of-your-cluster>
     http:
       paths:
       - path: /
