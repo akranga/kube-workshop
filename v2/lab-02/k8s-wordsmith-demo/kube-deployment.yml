@@ -27,12 +27,12 @@ spec:
     spec:
       containers:
       - name: db
-        image: harbor.svc.viktor.workshop.base.stacks.delivery/workshop/db
+        image: harbor.svc.<cluster-name>.workshop.base.stacks.delivery/workshop/db
         ports:
         - containerPort: 5432
           name: db
       imagePullSecrets:
-      - name: harbor-viktor   
+      - name: harbor-<cluster-name>   
 ---
 apiVersion: v1
 kind: Service
@@ -64,12 +64,12 @@ spec:
     spec:
       containers:
       - name: words
-        image: harbor.svc.viktor.workshop.base.stacks.delivery/workshop/words:v2
+        image: harbor.svc.<cluster-name>.workshop.base.stacks.delivery/workshop/words:v2
         ports:
         - containerPort: 8080
           name: api
       imagePullSecrets:
-      - name: harbor-viktor  
+      - name: harbor-<cluster-name> 
 ---
 apiVersion: v1
 kind: Service
@@ -100,9 +100,9 @@ spec:
     spec:
       containers:
       - name: web
-        image: harbor.svc.viktor.workshop.base.stacks.delivery/workshop/web
+        image: harbor.svc.<cluster-name>.workshop.base.stacks.delivery/workshop/web
         ports:
         - containerPort: 80
           name: words-web
       imagePullSecrets:
-      - name: harbor-viktor
+      - name: harbor-<cluster-name>
