@@ -1,5 +1,5 @@
 
-# Lab 03 Scale the Application
+# Lab 03 Scale the Application && Rolling updates
 
 ## Introduction
 
@@ -35,3 +35,20 @@ words-7dbb6b4845-t9qg7   1/1       Running             0          1h        10.2
 words-7dbb6b4845-w8tgx   1/1       Running             0          1h        10.2.2.25   ip-10-0-34-172.eu-west-1.compute.internal
 words-7dbb6b4845-wvspz   1/1       Running             0          1s        10.2.1.48   ip-10-0-36-25.eu-west-1.compute.internal
 ```
+
+3. Now let's tail the logs of few ```words``` pods and observe that requests reaches all of them
+```
+╰─ kubectl logs -f words-7dbb6b4845-dn25s
+{"word":"ūdens"}
+{"word":"koks"}
+╰─ kubectl logs -f words-7dbb6b4845-hjt29
+{"word":"centīgs"}
+{"word":"cilvēks"}
+{"word":"ciets"}
+{"word":"ir"}
+{"word":"ciets"}
+...
+```
+
+> There is no native Kubernetes tool, that allows log aggregation from multiple pods, however there is a lightweight open-source tool written on Go called Stern that does log aggregation. Mac users can install it using Brew ```brew install stern```
+
