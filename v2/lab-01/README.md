@@ -95,3 +95,7 @@ web-ingress   wordsmith.app.<fqdn-of-your-cluster>                     80       
 5. Observe a home page of the application:
   
 ![Application](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/app.png "Logo Title Text 1")
+
+6. Clean up after yourself:
+```kubeclt delete -f kube-ingress.yml```
+```kubectl delete -f kube-deployment.yaml```
