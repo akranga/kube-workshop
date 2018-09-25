@@ -73,7 +73,7 @@ metadata:
   name: web-ingress
 spec:
   rules:
-  - host: wordsmith.app.<fqdn-of-your-cluster>
+  - host: wordsmith.apps.viktor.superkube.kubernetes.delivery
     http:
       paths:
       - path: /
