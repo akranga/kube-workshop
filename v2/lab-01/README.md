@@ -65,7 +65,22 @@ There are multiple ways how to make applications available publicly:
 Let's try to expose our application through Ingress via Traefik.
 
 1. Create a copy of [manifest](kube-ingress.yml) file in your Terminal. (Use VIM, or download the file from Github using Curl [link](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-01/kube-ingress.yml).
-2. Update ```spec.rules.-host``` field in kube-ingress.yml file with fqdn of your cluster (example: wordsmith.app.devopsdays.kubernetes.delivery)
+2. Update ```spec.rules.-host``` field in kube-ingress.yml file with fqdn of your cluster. Example: 
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: web-ingress
+spec:
+  rules:
+  - host: wordsmith.app.<fqdn-of-your-cluster>
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: web
+          servicePort: 80
+```          
 3. Run
 ```
 kubectl apply -f kube-ingress.yml
