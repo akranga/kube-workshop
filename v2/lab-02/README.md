@@ -56,13 +56,14 @@ spec:
     spec:
       containers:
       - name: db
-        image: harbor.svc.viktor.workshop.base.stacks.delivery/workshop/db
+        image: 
         ports:
         - containerPort: 5432
           name: db
       imagePullSecrets:
       - name: harbor-viktor
 ```
+Now Kubernetes is ready to pull images from private Docker registry!
 
 ## Modify the DB application
 
