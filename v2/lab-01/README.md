@@ -62,7 +62,8 @@ There are multiple ways how to make applications available publicly:
 * Ingress via user facing reverse proxy server such as nginx or Traefik.
 * NodePort - Exposes the Service on the same port of each selected node in the cluster using NAT. Makes a Service accessible from outside the cluster using <NodeIP>:<NodePort>.
   
-Let's try to expose our application through Ingress.
+Let's try to expose our application through Ingress via Traefik.
 
+1. 
 
 
