@@ -51,4 +51,5 @@ words-7dbb6b4845-wvspz   1/1       Running             0          1s        10.2
 ```
 
 > There is no native Kubernetes tool, that allows log aggregation from multiple pods, however there is a lightweight open-source tool written on Go called Stern that does log aggregation. Mac users can install it using Brew ```brew install stern```
+Logs can be tailed using ```stern . --namespace default | grep words```
 
