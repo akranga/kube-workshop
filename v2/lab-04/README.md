@@ -391,8 +391,11 @@ helm push --username=admin --password=***hidden*** wordsmith-0.1.0.tgz harbor
 2. Go to the: projects -> workshop -> helm charts
 3. See you chart (screenshot below)
 
-![Application](pictures/pic1.png "Logo Title Text 1")
+![Application](pictures/pic1.png "Harbor Picture 1")
 
+![Application](pictures/pic2.png "Harbor Picture 2")
+
+![Application](pictures/pic3.png "Harbor Picture 3")
 
 ### Tear down:
 
