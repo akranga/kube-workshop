@@ -52,7 +52,7 @@ registry-creds        kubernetes.io/dockerconfigjson        1         54s
 
 
 3. Check that secret has been created using ```kubectl get secret registry-creds --output=json```. The output should be similar to:
-```
+```json
 {
     "apiVersion": "v1",
     "data": {
@@ -72,8 +72,8 @@ registry-creds        kubernetes.io/dockerconfigjson        1         54s
 ```
 
 4. cd to k8s-wordsmith-demo directory and modify ```kube-deployment.yml``` file. Add ```imagePullSecrets``` to the ```specs``` section of each ```Deployment``` in order to use the secret we created in Step 2. Example:
-```
-...
+```yaml
+# ...
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
@@ -94,7 +94,7 @@ spec:
           name: db
       imagePullSecrets:
       - name: registry-creds
-...      
+# ...      
 ```
 Now Kubernetes is ready to pull images from private Docker registry!
 
