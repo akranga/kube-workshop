@@ -104,4 +104,6 @@ kubectl delete -f kube-deployment.yaml
 
 ## Application deployment using Kubernetes dashboard
 
-Dashboard is the Kubernetes web console that helps a user to navigate through the different Kubernetes components. Open your browser and go to the: https://kubernetes.apps.<cluster-name>.superkube.kubernetes.delivery
+Dashboard is the Kubernetes web console that helps a user to navigate through the different Kubernetes components. Open your browser and go to the: kubernetes.apps.<cluster-name>.superkube.kubernetes.delivery
+  
+
