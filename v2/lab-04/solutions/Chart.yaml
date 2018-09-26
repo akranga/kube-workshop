@@ -1,0 +1,15 @@
+description: Word Smith
+engine: gotpl
+home: https://www.devopsdays.org/events/2018-riga/welcome/
+icon: https://www.devopsdays.org/events/2018-riga/logo@2x.png
+keywords:
+- words
+- spring
+- devopsdays
+maintainers:
+- name: akranga
+- name: oginskis
+name: wordsmith
+sources:
+- https://github.com/kubernetes/charts
+version: 0.1.0

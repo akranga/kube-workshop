@@ -4,7 +4,7 @@ metadata:
   name: web-ingress
 spec:
   rules:
-  - host: wordsmith.app.<cluster-name>.superkube.kubernetes.delivery
+  - host: wordsmith.app.jenkins.demo01.superhub.io
     http:
       paths:
       - path: /

@@ -1,0 +1,11 @@
+api:
+  image: dockersamples/k8s-wordsmith-api
+  replicas: 5
+
+db:
+  image: dockersamples/k8s-wordsmith-db
+
+web:
+  image: dockersamples/k8s-wordsmith-web
+  servicePort: 80
+  ingressHost: app.jenkins.demo01.superhub.io
