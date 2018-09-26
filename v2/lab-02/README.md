@@ -20,11 +20,38 @@ Each workshop participant (ideally) has his own Harbor Docker registry running i
 ![Harbor](https://raw.githubusercontent.com/akranga/kube-workshop/master/v2/lab-02/harbor.png "Logo Title Text 1")
 
 2. Create a secret that contains credentials of your docker registry:
-```kubectl create secret docker-registry harbor-<cluster-name> --docker-server=harbor.svc.<cluster-name>.superkube.kubernetes.delivery --docker-username=admin --docker-password=Harbor12345 --docker-email=viktorsoginskis@gmail.com``` The output should be ```secret "harbor-viktor" created```.
+
+To do so, we suggest to create a file `create-secret.sh`
+```bash
+#!/bin/bash -xe
+kubectl \
+	create secret docker-registry \
+	registry-creds \
+	--docker-server=harbor.svc.cluster2.superkube.kubernetes.delivery \
+	--docker-username=admin --docker-password=Harbor12345
+```
+
+Then we add executable rights
+```
+chmod +x create-secret.sh
+./create-secret.sh
+# secret/registry-creds created
+```
+
+Validate correctness: 
+```
+kubectl get secrets
+
+NAME                  TYPE                                  DATA      AGE
+registry-creds        kubernetes.io/dockerconfigjson        1         54s
+```
+
 
 > Objects of type [secret](https://kubernetes.io/docs/concepts/configuration/secret/) are intended to hold sensitive information, such as passwords, OAuth tokens, and ssh keys. Putting this information in a secret is safer and more flexible than putting it verbatim in a pod definition or in a docker image.
 
-3. Check that secret has been created using ```kubectl get secret harbor-<cluster-name> --output=json```. The output should be similar to:
+
+
+3. Check that secret has been created using ```kubectl get secret registry-creds --output=json```. The output should be similar to:
 ```
 {
     "apiVersion": "v1",
@@ -43,6 +70,7 @@ Each workshop participant (ideally) has his own Harbor Docker registry running i
     "type": "kubernetes.io/dockerconfigjson"
 }
 ```
+
 4. cd to k8s-wordsmith-demo directory and modify ```kube-deployment.yml``` file. Add ```imagePullSecrets``` to the ```specs``` section of each ```Deployment``` in order to use the secret we created in Step 2. Example:
 ```
 ...
@@ -65,7 +93,7 @@ spec:
         - containerPort: 5432
           name: db
       imagePullSecrets:
-      - name: harbor-viktor
+      - name: registry-creds
 ...      
 ```
 Now Kubernetes is ready to pull images from private Docker registry!
@@ -116,12 +144,22 @@ docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/db
 
 5. Since we want to keep all our images secure, let's build & push 2 remaining services of the application (web and words) to our private docker registry (cd to the corresponding directories):
 
+Craete a file `build-and-push.sh`
+
 ```
+#!/bin/bash -xe
 docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/web .
 docker build -t harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/words .
 docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/web 
 docker push harbor.svc.<cluster-name>.superkube.kubernetes.delivery/workshop/words
 ```
+
+add execution rights and run
+```
+chmod +x build-and-push.sh
+./build-and-push.sh
+```
+
 
 6. cd to k8s-wordsmith-demo directory and modify ```kube-deployment.yml``` file. Make sure that all the ```Deployments``` point to the images we built in the Steps 4,5. Example:
 ```
