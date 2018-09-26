@@ -27,7 +27,7 @@ To do so, we suggest to create a file `create-secret.sh`
 kubectl \
 	create secret docker-registry \
 	registry-creds \
-	--docker-server=harbor.svc.cluster2.superkube.kubernetes.delivery \
+	--docker-server=harbor.svc.YOURCLUSTER.kubernetes.delivery \
 	--docker-username=admin --docker-password=Harbor12345
 ```
 
