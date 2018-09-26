@@ -1,24 +1,19 @@
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: chuck
-  labels:
-    name: chucknorris
+  name: chuck-deployment
 spec:
-  replicas: 1
   selector:
-    app: chuck
-    version: 0.1.0
+    matchLabels:
+      app: chuck
+  replicas: 2
   template:
     metadata:
       labels:
         app: chuck
-        version: 0.1.0
     spec:
       containers:
       - name: chuck
-        image: akranga/chucknorris
-        imagePullPolicy: Never
+        image: akranga/chucknorris:latest
         ports:
-        - name: api
-          containerPort: 8080
+        - containerPort: 8080
