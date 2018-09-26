@@ -389,7 +389,10 @@ helm push --username=admin --password=***hidden*** wordsmith-0.1.0.tgz harbor
 
 1. With your browser open: https://harbor.svc.YOURSTACK.kubernetes.delivery/chartrepo/workshop
 2. Go to the: projects -> workshop -> helm charts
-3. See you chart
+3. See you chart (screenshot below)
+
+![Application](pictures/pic1.png "Logo Title Text 1")
+
 
 ### Tear down:
 
