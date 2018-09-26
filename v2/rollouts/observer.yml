@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: agile-demo
+  namespace: default
+  labels:
+    app: agile-demo
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+  selector:
+    app: agile-demo
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: agile-demo
+  namespace: default
+  labels:
+    app: agile-demo
+spec:
+  rules:
+  - host: agile-demo.app.devopsdays.kubernetes.delivery
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: agile-demo
+          servicePort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: agile-demo
+  namespace: default
+  labels:
+    app: agile-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agile-demo
+  template:
+    metadata:
+      name: agile-demo
+      labels:
+        app: agile-demo
+    spec:
+      serviceAccountName: superaccount
+      containers:
+      - name: agile-demo
+        image: agilestacks/agile-demo
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 3000
