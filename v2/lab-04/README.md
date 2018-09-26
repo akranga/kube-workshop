@@ -361,9 +361,38 @@ smith-wordsmith-web-76485bc68b-qmq6c  0/1    ContainerCreating  0         0s
 ### Validate:
 Now let's hit [http://smith.app.YOUR-CLUSTER.superhub.io] with your browser. 
 
+### Charts distribution
+You can distribute a your helm chart via Chart repository. Your stack have got a Chart museum deployed as part of Harbor registry. To upload your helm chart you need to do following actions:
+
+**1. Package helm chart**
+Run following command:
+```bash
+helm package .
+ls *.tgz
+# wordsmith-0.1.0.tgz
+```
+
+**2. Add helm chart registry**
+Run following command (Harbor password required)
+```bash
+helm repo add my-charts --username=admin --password=**hidden** https://harbor.svc.YOURSTACK.kubernetes.delivery/chartrepo/workshop
+```
+
+**3. Upload chart***
+Again, use `helm` (Harbor password required):
+```bash
+helm plugin install https://github.com/chartmuseum/helm-push
+helm push --username=admin --password=***hidden*** wordsmith-0.1.0.tgz harbor
+```
+
+**4. Validate**
+
+1. With your browser open: https://harbor.svc.YOURSTACK.kubernetes.delivery/chartrepo/workshop
+2. Go to the: projects -> workshop -> helm charts
+3. See you chart
+
 ### Tear down:
 
 ```
 helm delete --purge smith
 ```
-
