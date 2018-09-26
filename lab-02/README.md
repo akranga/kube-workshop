@@ -1,11 +1,10 @@
-# Lab 2: Schedulling container execution
+# Lab 1: Schedulling container execution
 
 ## Prerequisites
 
-Go to the lab-02 directory.
 ```
-$ cd ~/kube-workshop/lab-02/
-~/kube-workshop/lab-02 $ pwd
+$ cd ~/kube-workshop/v1/lab-02/
+~/kube-workshop/v1/lab-02 $ pwd
 /home/core/kube-workshop/lab-02
 ```
 
@@ -21,17 +20,11 @@ NAME        LABELS                             STATUS
 ## It is time to open Kubernetes Dashboard
 
 Dashboard is the Kubernetes web console that helps you navigate through the different pods. Open your browser and go to the:
-https://YOUR-IP-ADDRESS/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard
+https://kubernete4s.YOURCLUSTER.kubernetes.lelivery
 
 Don't forget to put `https` in the URL because current VM is listenring port 443 (https) only and not 80 (http)
 
 You will get a security warning. This is okay and you can ignore it. We are using self-signed certificates there (hi Let's encrypt project :) ). 
-
-When you will be prompted for username and password please enter the following:
-```
-User:     gdg
-Password: riga17
-```
 
 Now you should be able to enter the dashboard
 
@@ -76,33 +69,8 @@ You can also export POD definition as YAML file:
 
 You will also notice that Kubernetes tagged your pod with some labels. Labels are important, they allow different kubernetes resources to lookup each other. For example POD and ReplicaSet has been linked by labels. You can have multiple PODs of the same container. They need to labeled differently to allow ReplicaSets to work with them correspondingly
 
-## ReplicaSet 
 
-This is an evolution of *Replication Controller*. It behaves more or less like an autoscaling group that you can find in public cloud provider.
-
-Now let's check how does it works.
-
-Return to the Terminal console (CLI) and run command:
-```
-$ docker ps | grep akranga/chucknorris
-
-b56f8dd98ec7        akranga/chucknorris                                          "java -jar /app.jar"     19 minutes ago      Up 19 minutes                           k8s_chuck-norris.bfdf57f0_chuck-norris-4098746947-qx8xx_default_4d761032-df88-11e6-87de-12810cc5ac56_858a9cb3
-
-```
-
-Let's kill this container
-```
-$ docker kill b56f8dd98ec7
-b56f8dd98ec7
-```
-
-If we will come back to the Kubernetes UI we will see that Kubernetes detected a container failure and restarted it. 
-
-![Dashboard](../docs/dashboard6.png)
-
-Now let's do something similar to from the CLI
-
-## Getting things dirty
+## Introduction to CLI
 
 Open the CLI. Kubernetes can be operated by `kubectl` tool. Let's check what we have got here:
 ```
@@ -332,30 +300,25 @@ $ vim chucknorris-rc.yml
 put following content and save the file `:wq`
 
 ```yaml
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: chuck
-  labels:
-    name: chucknorris
+  name: chuck-deployment
 spec:
-  replicas: 1
   selector:
-    app: chuck
-    version: 0.1.0
+    matchLabels:
+      app: chuck
+  replicas: 2
   template:
     metadata:
       labels:
         app: chuck
-        version: 0.1.0
     spec:
       containers:
       - name: chuck
-        image: akranga/chucknorris
-        imagePullPolicy: Never
+        image: akranga/chucknorris:latest
         ports:
-        - name: api
-          containerPort: 8080
+        - containerPort: 8080
 ```
 
 To start you can run following command:
